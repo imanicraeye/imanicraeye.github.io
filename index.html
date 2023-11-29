@@ -10,7 +10,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      background-color: #f0f0f0;
+      background-color: #EB6C85;
     }
 
     canvas {
@@ -20,13 +20,13 @@
   <title>Snake Game</title>
 </head>
 <body>
-  <canvas id="snakeCanvas" width="400" height="400"></canvas>
+  <canvas id="snakeCanvas" width="600" height="600"></canvas>
 
   <script>
     const canvas = document.getElementById("snakeCanvas");
     const ctx = canvas.getContext("2d");
 
-    const boxSize = 200;
+    const boxSize = 20;
     let snake = [{ x: 10, y: 10 }];
     let direction = "right";
     let changingDirection = false;
@@ -71,7 +71,7 @@
       }
 
       // Draw the food
-      ctx.fillStyle = "#ff3333";
+      ctx.fillStyle = "#009900";
       ctx.fillRect(food.x * boxSize, food.y * boxSize, boxSize, boxSize);
 
       // Check if the snake ate the food
