@@ -10,7 +10,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      background-color: #EA6C84;
+      background-color: #f0f0f0;
     }
 
     canvas {
@@ -26,9 +26,11 @@
     const canvas = document.getElementById("snakeCanvas");
     const ctx = canvas.getContext("2d");
 
-    const boxSize = 20;
+    const boxSize = 200;
     let snake = [{ x: 10, y: 10 }];
     let direction = "right";
+    let changingDirection = false;
+    let interval;
 
     function draw() {
       // Clear the canvas
@@ -62,13 +64,14 @@
       if (newHead.x < 0 || newHead.x >= canvas.width / boxSize ||
           newHead.y < 0 || newHead.y >= canvas.height / boxSize) {
         // Game over
+        clearInterval(interval);
         alert("Game over!");
         resetGame();
         return;
       }
 
       // Draw the food
-      ctx.fillStyle = "#009900";
+      ctx.fillStyle = "#ff3333";
       ctx.fillRect(food.x * boxSize, food.y * boxSize, boxSize, boxSize);
 
       // Check if the snake ate the food
@@ -87,14 +90,12 @@
       for (let i = 1; i < snake.length; i++) {
         if (newHead.x === snake[i].x && newHead.y === snake[i].y) {
           // Game over
+          clearInterval(interval);
           alert("Game over!");
           resetGame();
           return;
         }
       }
-
-      // Request the next animation frame
-      requestAnimationFrame(draw);
     }
 
     function generateFood() {
@@ -109,15 +110,20 @@
       direction = "right";
       generateFood();
       draw();
+      interval = setInterval(draw, 20000); // Adjust the interval for snake speed
     }
 
     // Initial setup
     let food;
     generateFood();
     draw();
+    interval = setInterval(draw, 20000); // Adjust the interval for snake speed
 
     // Handle keyboard input
     window.addEventListener("keydown", event => {
+      if (changingDirection) return;
+      changingDirection = true;
+
       switch (event.key) {
         case "ArrowUp":
           if (direction !== "down") direction = "up";
@@ -132,6 +138,11 @@
           if (direction !== "left") direction = "right";
           break;
       }
+    });
+
+    // Reset the changing direction flag after key is released
+    window.addEventListener("keyup", () => {
+      changingDirection = false;
     });
   </script>
 </body>
